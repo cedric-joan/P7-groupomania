@@ -1,8 +1,8 @@
 POST  http://localhost:3000/auth/user/signup   
-
 Content-Type: application/json
 
 {
+    "pseudo": "ced",
     "email": "cedric.joan@gmail.com",
     "password": "cedricjoan"
 }

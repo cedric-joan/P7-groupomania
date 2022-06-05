@@ -6,15 +6,17 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user.model")
 
 function signup(req, res) {
+  console.log(req.body)
   const NUMBER_OF_ROUNDS = 10;
   bcrypt.hash(req.body.password, NUMBER_OF_ROUNDS).then((hash) => {
     const user = new User({
+      pseudo: req.body.pseudo,
       email: req.body.email,
       password: hash,
     });
     user
       .save()
-      .then(() => res.status(201).json({ message: "Utilisateur créé" }))
+      .then(() => login(req,res))
       .catch((error) => res.status(400).json({ error }));
   });
 }
