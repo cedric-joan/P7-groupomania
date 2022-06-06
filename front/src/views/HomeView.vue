@@ -8,8 +8,9 @@
               
               <div class="sticky"><PopularList></PopularList></div>
         <div class="card-items">
-          <CardItem>
-            </CardItem>
+          <!-- <div v-for="post in posts"></div> -->
+          <!-- <CardItem pseudo="post.pseudo" content="post.content" imageurl="post.imageUrl"></CardItem> -->
+            
           <CardItem></CardItem>
           <CardItem></CardItem>
           <CardItem></CardItem>
@@ -22,13 +23,12 @@
           
       
       </template>
+
     <script>
     // @ is an alias to /src
 import CardItem from "../components/CardItem.vue";
     import PopularList from "../components/PopularList.vue";
-import postForm from '../components/postForm.vue'
 import PostForm from "../components/postForm.vue";
-// import { url } from "../main";
     
     
     export default {
@@ -36,57 +36,50 @@ import PostForm from "../components/postForm.vue";
       components: {
     CardItem,
     PopularList,
-    postForm,
     PostForm
-},
-    beforeCreate(){
-      const token = localStorage.getItem("token")
-      if(token == null){
-        this.$router.push("/login")
+      },
+data(){
+      return {
+        pseudo:"",
+        posts:[],
+        email: null,
+        users: [],
+        imageUrl: null,
+        token: "",
+        userId: "",
+        admin: false,
+        userPicture:""
       }
-    }
-    }
-    // mounted(){
-    //   const postData = {
-    //     method: "POST",
-    //     body: JSON.stringify({content: this.content}),
-    //     headers: { "Content-Type": "application/json",
-    //     Authorization: `Bearer ${localStorage.getItem("token")}` },
-    //   };
-    
-      
-    // fetch(url +"posts", postData)
-    // .then((res) => {
-    //   if(res.status ===200){
-    //     return res.json()
-    //   }else{
-    //     throw new Error("Erreur posts")
-    //   }
-    // })
-    // .then((res) =>{
-    //   const {email, posts} =res
-    //   this.posts = posts
-    //   this.email = email
-    // })
-    // .catch((err) => console.log(err))
-    // },
-    // data(){
-    //   return{
-    //     pseudo:"",
-    //     posts:[],
-    //     email: null,
-    //     users: [],
-    //     imageData: null,
-    //     token: "",
-    //     userId: "",
-    //     admin: false,
-    //     userPicture:""
+    },
+    // beforeCreate(){
+    //   const token = localStorage.getItem("token")
+    //   if(token == null){
+    //     this.$router.push("/login")
     //   }
     // }
-     
-    //   }
-    
-    
+    mounted(){
+      const option = {
+        method: "GET",
+        headers: { "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}` },
+        body: JSON.stringify({content: this.content}),
+      };
+      const url = "http://localhost:3000"
+    fetch(url +"/posts/", option)
+    .then((res) => {
+      if(res.ok){
+        return res.json()
+      }else{
+        throw new Error("Erreur posts")
+      }
+    })
+    .then((res) => {
+      const { posts} = res
+      this.posts = posts
+    })
+    .catch((err) => console.log(err))
+    }
+    }
     </script>
 
 

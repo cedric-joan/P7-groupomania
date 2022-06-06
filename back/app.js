@@ -32,7 +32,7 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 
 
 app.use("/auth/post", postRoutes);
-app.use("/auth/user", userRoutes)
- 
+app.use("/auth/user", userRoutes);
+app.use("/posts", postRoutes); 
 
   module.exports = app;

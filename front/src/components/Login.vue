@@ -9,8 +9,8 @@
           width="250"
           height="250"
         />
-        <h1 class="h3 mb-3 fw-normal">Veuillez vous indentifier</h1>
-
+        <h1 class="h3 mb-3 fw-normal">Veuillez vous identifier</h1>
+<p v-if="this.errorLogin">{{ errorLogin }}</p>
         <div class="form-floating">
           <input
             :class="this.isEmailValid ? 'is-valid' : 'is-invalid'"
@@ -46,7 +46,7 @@
             @click="() => submitLogin(this.email, this.password)"
             :disabled="!isPasswordValid"
           >
-            S'indentifier
+            S'identifier
           </button></router-link
         >
         <p class="mt-5 mb-3 text-muted">&copy; 2018–2022</p>
@@ -65,21 +65,19 @@ function submitLogin(email, password) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-    },
+       },
       body: JSON.stringify({ email, password }),
   };
   fetch("http://localhost:3000/auth/user/login", option)
     .then((res) => res.json())
     .then((res) => {
-      if(res.ok){
-        this.$router.push("/")
-      }
-      
+      if(res.ok)
+  localStorage.setItem("token", res.token);
+          return this.$router.push("/")
     })
-    .catch((err) => console.log(err));
-  
-  // const token = "JWT TOKEN";
-  // localStorage.setItem("token", token);
+    .catch(() => {
+      return this.errorLogin = "Vérifier vos identifiants";
+    })
 }
 
 
@@ -93,6 +91,7 @@ export default {
       password: "",
       isEmailValid: false,
       isPasswordValid: false,
+      errorLogin: "",
     };
   },
   methods: {
@@ -102,7 +101,6 @@ export default {
         alert("Veuillez renseigner tous les champs");
       }
     },
-    
     submitLogin,
     setEmailValidity(bool) {
       this.isEmailValid = bool;
@@ -112,8 +110,7 @@ export default {
     },
   },
   watch: {
-    email(value) {
-      console.log(value);
+    email() {
       const emailRegExp = new RegExp(
         "^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$",
         "g"
@@ -123,7 +120,6 @@ export default {
     },
 
     password(value) {
-      console.log(value);
       const isValid = value.length > 5;
       return this.setPasswordValidity(isValid);
     },

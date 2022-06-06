@@ -16,7 +16,7 @@ function signup(req, res) {
     });
     user
       .save()
-      .then(() => login(req,res))
+      .then(() => login(req, res))
       .catch((error) => res.status(400).json({ error }));
   });
 }
@@ -49,4 +49,31 @@ function login(req, res) {
 function sendErrorMessage(res, error) {
   res.status(401).json({ error });
 }
-module.exports = { signup, login };
+function getAllUsers(res){
+  User.find().select("-password")
+    .then((users) => res.status(200).json(users))
+    .catch((error) => res.status(404).json({ error }));
+}
+function getOneUser(req, res) {
+  User.findOne({ _id: req.params.id })
+    .then((user) => res.status(200).json(user))
+    .catch((error) => res.status(404).json({ error }));
+}
+function deleteUser(req, res){
+  User.findOne({ _id: req.params.id }).then((user) => {
+    if (user.userId != req.userId) {
+      res
+        .status(403)
+        .json({ message: "utilisateur ne possède pas cette ressource" });
+      return;
+    }
+    User.deleteOne({ _id: req.params.id })
+    .then(() => res.status(200).json({ message: "Utilisteur supprimé !" }))
+    .catch((error) => res.status(400).json({ error }));
+})
+}
+
+
+
+
+module.exports = { signup, login, getAllUsers, getOneUser,deleteUser };

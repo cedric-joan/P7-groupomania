@@ -4,6 +4,13 @@
 export default {
   name: 'CardItem',
   components:{
+},
+props:{
+  userId: { type: String },
+  pseudo: { type: String },
+  content: { type: String },
+  imageUrl: { type: String },
+
 }
 }
 </script>
@@ -20,7 +27,6 @@ export default {
   
   <img src="../assets/images_pro/image_pro-5.jpg" class="card-img-top" alt="#">
   <div class="card-body">
-    <h3 class="card-title">La montée en puissance...</h3>
     <p class="card-text">L’e-réputation est le résultat en terme d’image des contenus produits et diffusés par l’entreprise.</p>
   </div>
   <div class="card-remark">

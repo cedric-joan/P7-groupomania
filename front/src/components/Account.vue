@@ -122,6 +122,7 @@ export default {
       password: "",
       isEmailValid: false,
       isPasswordValid: false,
+      isLoggedIn: false,
     };
   },
   methods: {
@@ -144,18 +145,15 @@ export default {
   },
   watch: {
     email(value) {
-      console.log(value);
       const emailRegExp = new RegExp(
         "^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$",
         "g"
       );
       const isValid = emailRegExp.test(value);
-      console.log(isValid)
       return this.setEmailValidity(isValid);
     },
 
     password(value) {
-      console.log(value);
       const isValid = value.length > 5;
       return this.setPasswordValidity(isValid);
     },
