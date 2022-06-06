@@ -10,7 +10,7 @@
           height="250"
         />
         <h1 class="h3 mb-3 fw-normal">Veuillez vous identifier</h1>
-<p v-if="this.errorLogin">{{ errorLogin }}</p>
+<!-- <p :class="errorLogin">{{ error }}</p> -->
         <div class="form-floating">
           <input
             :class="this.isEmailValid ? 'is-valid' : 'is-invalid'"
@@ -71,14 +71,18 @@ function submitLogin(email, password) {
   fetch("http://localhost:3000/auth/user/login", option)
     .then((res) => res.json())
     .then((res) => {
-      if(res.ok)
-  localStorage.setItem("token", res.token);
+      const token = res.token
+      // if(res.ok)
+  localStorage.setItem("token", token);
           return this.$router.push("/")
     })
-    .catch(() => {
-      return this.errorLogin = "Vérifier vos identifiants";
-    })
+    .catch((err) => console.log(err))
 }
+// function errorLogin(err){
+//       if (err === 401) {
+//        return this.errror = "Vérifier vos identifiants";
+//       }
+//     }
 
 
 
@@ -91,7 +95,7 @@ export default {
       password: "",
       isEmailValid: false,
       isPasswordValid: false,
-      errorLogin: "",
+      // error:  "",
     };
   },
   methods: {

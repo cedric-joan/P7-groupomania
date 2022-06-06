@@ -61,11 +61,11 @@ data(){
       const option = {
         method: "GET",
         headers: { "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}` },
+        Authorization: `Bearer ${localStorage.getItem("token")}`},
         body: JSON.stringify({content: this.content}),
       };
       const url = "http://localhost:3000"
-    fetch(url +"/posts/", option)
+    fetch(url +"/auth/posts/", option)
     .then((res) => {
       if(res.ok){
         return res.json()

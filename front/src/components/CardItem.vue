@@ -22,11 +22,14 @@ props:{
 <div class="card-header">
    <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle" 
   alt="Avatar" />
+  <!-- {{ pseudo }} -->
     Publié par Alex il y a 10 min...
   </div>
   
+  <!-- {{ imageUrl }} -->
   <img src="../assets/images_pro/image_pro-5.jpg" class="card-img-top" alt="#">
   <div class="card-body">
+    <!-- {{ content }} -->
     <p class="card-text">L’e-réputation est le résultat en terme d’image des contenus produits et diffusés par l’entreprise.</p>
   </div>
   <div class="card-remark">

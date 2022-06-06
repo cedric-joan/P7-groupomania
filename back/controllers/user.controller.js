@@ -25,7 +25,7 @@ function login(req, res) {
   User.findOne({ email: req.body.email })
     .then((user) => {
       if (!user) {
-        return sendErrorMessage(res, "utilisateur non trouvé !");
+        return res.status(401).json({message: "utilisateur non trouvé !"});
       }
       return bcrypt
         .compare(req.body.password, user.password)
@@ -34,7 +34,7 @@ function login(req, res) {
     .then((obj) => {
       const { isValid, user } = obj;
       if (!isValid) {
-        return sendErrorMessage(res, "mot de passe incorrect !");
+        return res.status(401).json({message:"mot de passe incorrect !"}) ;
       }
       const jwtPassword = process.env.JWT_PASSWORD;
       res.status(200).json({
@@ -46,9 +46,7 @@ function login(req, res) {
     })
     .catch((error) => res.status(500).json({ error }));
 }
-function sendErrorMessage(res, error) {
-  res.status(401).json({ error });
-}
+
 function getAllUsers(res){
   User.find().select("-password")
     .then((users) => res.status(200).json(users))
