@@ -5,18 +5,16 @@ const {
   createPost,
   modifyPost,
   deletePost,
-  getOnePost: getPost,
-  getAllPost: getPosts,
+  getPosts,
 } = require("../controllers/post.controller");
 
 // const imageUpload = require("../middleware/image-config")
 const auth = require("../middleware/auth");
-// const multer = require("../middleware/multer-config");
+const multer = require("../middleware/multer-config");
 
-router.post("/", createPost);
+router.post("/", multer, createPost);
 router.put("/:id", auth, modifyPost);
 router.delete("/:id", auth, deletePost);
-router.get("/:id", auth, getPost);
 router.get("/", auth, getPosts);
 
 module.exports = router;

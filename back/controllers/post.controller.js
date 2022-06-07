@@ -1,14 +1,23 @@
 const {Post} = require("../models/post.model");
 const fs = require("fs");
+const posts = []
 
 function createPost(req, res) {
-  const imageUrl = req.imageUrl
-  const content = req.content
-  const post = {content, imageUrl}
-  res.status(201).json( post )
+  const content = req.body.content
+  const hasImage = req.file != null
+  const url = hasImage ? createImageUrl(req) : null
+  const post = { content, imageUrl: url }
+  posts.unshift(post)
+  res.status(201).json({post})
 }
 
+function createImageUrl(req) {
+let pathToImage = req.file.path.replace("\\", "/")
+const protocol = req.protocol
+const host = req.get("host")
+return `${protocol}://${host}/${pathToImage}`
 
+}
 
 function modifyPost(req, res) {
   const postObjet = req.file
@@ -40,22 +49,15 @@ function deletePost(req, res) {
     });
   });
 }
-function getOnePost(req, res) {
-  Post.findOne({ _id: req.params.id })
-    .then((post) => res.status(200).json(post))
-    .catch((error) => res.status(404).json({ error }));
-}
-function getAllPost(res) {
-  Post.find()
-    .then((posts) => res.status(200).json(posts))
-    .catch((error) => res.status(400).json({ error }));
+function getPosts(req,res) {
+  const email = req.email
+res.send({posts, email})
 }
 
 
 module.exports = {
   createPost,
   deletePost,
-  getAllPost,
-  getOnePost,
+  getPosts,
   modifyPost,
 };

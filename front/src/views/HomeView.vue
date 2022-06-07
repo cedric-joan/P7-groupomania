@@ -8,12 +8,12 @@
               
               <div class="sticky"><PopularList></PopularList></div>
         <div class="card-items">
-          <!-- <div v-for="post in posts"></div> -->
-          <!-- <CardItem pseudo="post.pseudo" content="post.content" imageurl="post.imageUrl"></CardItem> -->
-            
+          <div v-for="post in posts" :key="post">
+          <CardItem :pseudo="post.pseudo" :content="post.content" :url="post.imageUrl"></CardItem>
+            </div>
+          <!-- <CardItem></CardItem>
           <CardItem></CardItem>
-          <CardItem></CardItem>
-          <CardItem></CardItem>
+          <CardItem></CardItem> -->
           
       
       </div>
@@ -60,13 +60,12 @@ data(){
     mounted(){
       const option = {
         method: "GET",
-        headers: { "Content-Type": "application/json",
+        headers: { 
         Authorization: `Bearer ${localStorage.getItem("token")}`},
-        body: JSON.stringify({content: this.content}),
       };
-      const url = "http://localhost:3000"
-    fetch(url +"/auth/posts/", option)
+    fetch("http://localhost:3000/auth/posts/", option)
     .then((res) => {
+      console.log(res)
       if(res.ok){
         return res.json()
       }else{
@@ -74,8 +73,8 @@ data(){
       }
     })
     .then((res) => {
-      const { posts} = res
-      this.posts = posts
+      this.posts = res
+      
     })
     .catch((err) => console.log(err))
     }

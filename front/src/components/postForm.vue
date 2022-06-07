@@ -2,7 +2,6 @@
   
   
   <div class="card-remark">
-    <div>{{ content }}</div>
     <!-- <img v-if="imageUrl" src="" alt=""> -->
         <input class="form-post" type="text" placeholder="Ajoutez un texte" aria-label="default input example" v-model="content">
         <input type="file" class="form-control" aria-label="file example" required @change="addNewFile">
@@ -14,40 +13,39 @@
 
 
 
-
-
 <script>
 export default {
     name:'postForm',
     data() {
       return{
-        imageUrl:"",
-  // userId:"",
-  // pseudo:"",
+        userId:"",
+  pseudo:"",
   content:"",
+        selectedImage: null,
 
       }
     },
 methods:{
 addNewFile(e){
-this.imageUrl = e.target.files[0]
+this.selectedImage = e.target.files[0]
 },
 
 
   sendPost(){
 const formData = new FormData()
+formData.append("userId", this.userId)
+formData.append("pseudo", this.pseudo)
 formData.append("content",this.content)
-formData.append("image", this.imageUrl)
+formData.append("image", this.selectedImage)
 
 
     const options = {
         method: "POST",
         headers: { 
-'Content-type': 'multipart/form-data; boundary=XXX',
         Authorization: `Bearer ${localStorage.getItem("token")}`,
         "Accept": "application/json"
         },
-        body: '--XXX\r\nContent-Disposition: form-data; name="file"; filename="filename.csv"\r\nContent-Type: text/csv\r\n\r\nA,B,C\r\n1,1.1,name1\r\n2,2.2,name2\r\n\r\n--XXX--',
+        body: formData
       };
     fetch("http://localhost:3000/auth/post", options)
     .then((res) => {
@@ -58,9 +56,9 @@ formData.append("image", this.imageUrl)
         throw new Error("Erreur post")
       }
     })
-    // .then(() =>{
-    //   this.$router.go()
-    // })
+    .then(() => {
+      this.$router.go()
+    })
     .catch((err) => console.log(err))
     },
   }
