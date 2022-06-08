@@ -1,8 +1,9 @@
 <template>
-  <form class="post">
+  <form v-if="this.isLoggedIn" 
+  class="post">
     <div class="mb-3">
       <img
-        src="../assets/images_pro/photo_pro-10.jpg"
+        src="#"
         class="img-thumbnail"
         alt="photo_portrait"
       />
@@ -76,6 +77,8 @@
         </button></router-link
       >
     </div>
+        <p class="mt-5 mb-3 text-muted">Groupomania &copy; 2018–2022</p>
+
   </div>
 </template>
 
@@ -102,10 +105,8 @@ const url = "http://localhost:3000"
         throw new Error("Erreur ");
       }
     })
-    .then((res) => {
-      const token = res.token
-      localStorage.setItem("token", token);
-    this.$router.push("/")
+    .then(() => {
+    this.$router.push("/login")
     })
     .catch((err) => console.log(err));
 
@@ -176,9 +177,9 @@ export default {
   margin-top: 1rem;
 }
 .name {
-  width: 35%;
+  width: 20%;
   margin: auto;
-  margin-top: 2rem;
+  margin-top: 10rem;
 }
 .col {
   margin-top: 0.5rem;
@@ -210,13 +211,21 @@ export default {
   margin-top: 1rem;
   gap: 1rem;
 }
+.mb-3{
+  margin-top: 10rem;
+}
 
-@media (max-width: 992px) {
+@media (max-width: 768px) {
   .bd-placeholder-img-lg {
     font-size: 3.5rem;
   }
   button {
     width: 130px;
   }
+  .name {
+  width: 90%;
+  margin: auto;
+  margin-top: 15rem;
+}
 }
 </style>

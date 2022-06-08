@@ -13,6 +13,6 @@ module.exports = (req, res, next) => {
       next();
     }
   } catch (error) {
-    res.status(401).json({ error: "Invalid request !" + error });
+    res.status(401).json({ error: "Vérifier vos identifiants !"});
   }
 };

@@ -8,17 +8,17 @@
               
               <div class="sticky"><PopularList></PopularList></div>
         <div class="card-items">
-          <div v-for="post in posts" :key="post">
-          <CardItem :pseudo="post.pseudo" :content="post.content" :url="post.imageUrl"></CardItem>
-            </div>
-          <!-- <CardItem></CardItem>
+          <!-- <div v-for="post in posts" :key="post"> -->
+            <!-- </div> -->
+          <CardItem ></CardItem>
           <CardItem></CardItem>
-          <CardItem></CardItem> -->
+          <CardItem></CardItem>
           
-      
+      <!-- :pseudo="post.pseudo" :content="post.content" :url="post.imageUrl" -->
       </div>
       
         </div>
+        <p class="mt-5 mb-3 text-muted">Groupomania&copy; 2018–2022</p>
       </div>
           
       
@@ -65,7 +65,6 @@ data(){
       };
     fetch("http://localhost:3000/auth/posts/", option)
     .then((res) => {
-      console.log(res)
       if(res.ok){
         return res.json()
       }else{
@@ -73,8 +72,8 @@ data(){
       }
     })
     .then((res) => {
+      console.log(res)
       this.posts = res
-      
     })
     .catch((err) => console.log(err))
     }
@@ -95,6 +94,10 @@ data(){
   display: flex;
   justify-content: space-evenly;
   margin-left: 2.8rem;
+}
+p {
+  margin-left: 2.8rem;
+
 }
 
 </style>

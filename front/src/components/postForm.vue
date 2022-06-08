@@ -43,6 +43,7 @@ formData.append("image", this.selectedImage)
         method: "POST",
         headers: { 
         Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-type": "application/json",
         "Accept": "application/json"
         },
         body: formData

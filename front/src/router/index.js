@@ -23,24 +23,24 @@ const router = createRouter({
   routes
 })
 
-router.beforeEach((to) => {
- if(isLoginValid(to)){
-   return router.push("/login")
- }
-})
-function isLoginValid(to){
-  if(!isPrivatePage(to)) return false
-if(!isTokenInCache()) return true
-return false
-}
+// router.beforeEach((to) => {
+//  if(isLoginValid(to)){
+//    return router.push("/login")
+//  }
+// })
+// function isLoginValid(to){
+//   if(!isPrivatePage(to)) return false
+// // if(!isTokenInCache()) return true
+// // return false
+// }
 
-function isPrivatePage(to){
-  const privatePages = ["/login", "/signup"]
-  return !privatePages.includes(to.path)
-}
+// function isPrivatePage(to){
+//   const privatePages = ["/login", "/signup"]
+//   return !privatePages.includes(to.path)
+// }
 
-function isTokenInCache(){
-return localStorage.getItem("token") != null
-}
+// function isTokenInCache(){
+// return localStorage.getItem("token") != null
+// }
 
 export default router

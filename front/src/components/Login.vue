@@ -6,8 +6,8 @@
           class="mb-4"
           src="../assets/icon-above-font.png"
           alt="logo_groupomania"
-          width="250"
-          height="250"
+          width="200"
+          height="200"
         />
         <h1 class="h3 mb-3 fw-normal">Veuillez vous identifier</h1>
 <!-- <p :class="errorLogin">{{ error }}</p> -->
@@ -39,7 +39,6 @@
             Mot de passe non valide.
           </div>
         </div>
-        <router-link to="/">
           <button
             class="w-100 btn btn-lg btn-danger"
             type="submit"
@@ -47,9 +46,9 @@
             :disabled="!isPasswordValid"
           >
             S'identifier
-          </button></router-link
-        >
-        <p class="mt-5 mb-3 text-muted">&copy; 2018–2022</p>
+          </button>
+        
+        <p class="mt-5 mb-3 text-muted">Groupomania&copy; 2018–2022</p>
       </form>
     </main>
   </div>
@@ -72,7 +71,7 @@ function submitLogin(email, password) {
     .then((res) => res.json())
     .then((res) => {
       const token = res.token
-      // if(res.ok)
+      if(res.ok)
   localStorage.setItem("token", token);
           return this.$router.push("/")
     })
@@ -141,7 +140,10 @@ body {
   align-items: center;
   padding-top: 10px;
   padding-bottom: 40px;
-  background-color: #ffffff;
+  background-color: #f6eded;
+}
+h1 {
+  margin-left: 0.5rem;
 }
 a {
   text-decoration: none;
@@ -151,7 +153,9 @@ a {
   max-width: 330px;
   padding: 15px;
 }
-
+.mb-4 {
+  margin-left: 2.5rem;
+}
 .form-signin .form-floating:focus-within {
   z-index: 2;
 }
@@ -166,5 +170,10 @@ a {
   margin-bottom: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
+}
+@media (max-width: 992px){
+h1 {
+  margin-left: 2rem;
+}
 }
 </style>
