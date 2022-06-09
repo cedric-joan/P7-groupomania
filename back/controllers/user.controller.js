@@ -10,14 +10,12 @@ function signup(req, res) {
   const NUMBER_OF_ROUNDS = 10;
   bcrypt.hash(req.body.password, NUMBER_OF_ROUNDS).then((hash) => {
     const user = new User({
-      userId: req.body.userId,
-      pseudo: req.body.pseudo,
       email: req.body.email,
       password: hash,
     });
     user
       .save()
-      .then(() => res.status(201).json({ message: "Utilisateur créé" }))
+      .then(() => res.status(201).json({user: user._id}))
       .catch(() => res.status(400).json({ message: "email déjà utilisé !" }));
   });
 }
@@ -49,11 +47,7 @@ function login(req, res) {
 }
 
 
-function getAllUsers(res){
-  User.find().select("-password")
-    .then((users) => res.status(200).json(users))
-    .catch((error) => res.status(404).json({ error }));
-}
+
 function getOneUser(req, res) {
   User.findOne({ _id: req.params.id })
     .then((user) => res.status(200).json(user))
@@ -76,4 +70,4 @@ function deleteUser(req, res){
 
 
 
-module.exports = { signup, login, getAllUsers, getOneUser,deleteUser };
+module.exports = { signup, login, getOneUser,deleteUser };

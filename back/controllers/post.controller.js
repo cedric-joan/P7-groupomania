@@ -1,4 +1,4 @@
-const {Post} = require("../models/post.model");
+const Post = require("../models/post.model");
 const fs = require("fs");
 const posts = []
 
@@ -8,7 +8,7 @@ function createPost(req, res) {
   const url = hasImage ? createImageUrl(req) : null
   const post = { content, imageUrl: url }
   posts.unshift(post)
-  res.status(201).json({post})
+  res.send({post})
 }
 
 function createImageUrl(req) {
@@ -19,19 +19,19 @@ return `${protocol}://${host}/${pathToImage}`
 
 }
 
-function modifyPost(req, res) {
-  const postObjet = req.file
-    ? {
-        ...JSON.parse(req.body.post),
-        imageUrl: `${req.protocol}://${req.get("host")}/images/${
-          req.file.filename
-        }`,
-      }
-    : { ...req.body };
-  Post.updateOne({ _id: req.params.id }, { ...postObjet, _id: req.params.id })
-    .then(() => res.status(200).json())
-    .catch((error) => res.status(400).json({ error }));
-}
+// function modifyPost(req, res) {
+//   const postObjet = req.file
+//     ? {
+//         ...JSON.parse(req.body.post),
+//         imageUrl: `${req.protocol}://${req.get("host")}/images/${
+//           req.file.filename
+//         }`,
+//       }
+//     : { ...req.body };
+//   Post.updateOne({ _id: req.params.id }, { ...postObjet, _id: req.params.id })
+//     .then(() => res.status(200).json())
+//     .catch((error) => res.status(400).json({ error }));
+// }
 function deletePost(req, res) {
   Post.findOne({ _id: req.params.id }).then((post) => {
     if (post.userId != req.userId) {
@@ -59,5 +59,4 @@ module.exports = {
   createPost,
   deletePost,
   getPosts,
-  modifyPost,
 };

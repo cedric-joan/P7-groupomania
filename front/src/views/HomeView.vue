@@ -8,13 +8,13 @@
               
               <div class="sticky"><PopularList></PopularList></div>
         <div class="card-items">
-          <!-- <div v-for="post in posts" :key="post"> -->
-            <!-- </div> -->
-          <CardItem ></CardItem>
+          <div v-for="post in posts" :key="post">
+          <div>{{ post }}</div>
+            <CardItem ></CardItem>
+            </div>
           <CardItem></CardItem>
           <CardItem></CardItem>
           
-      <!-- :pseudo="post.pseudo" :content="post.content" :url="post.imageUrl" -->
       </div>
       
         </div>
@@ -43,41 +43,32 @@ data(){
         pseudo:"",
         posts:[],
         email: null,
-        users: [],
         imageUrl: null,
-        token: "",
-        userId: "",
         admin: false,
         userPicture:""
       }
     },
-    // beforeCreate(){
-    //   const token = localStorage.getItem("token")
-    //   if(token == null){
-    //     this.$router.push("/login")
-    //   }
-    // }
+    beforeCreate(){
+        const token = localStorage.getItem("token")
+      if(token == null){
+          this.$router.push("/login")
+      }
+    },
     mounted(){
       const option = {
         method: "GET",
         headers: { 
-        Authorization: `Bearer ${localStorage.getItem("token")}`},
+          Authorization: `Bearer ${localStorage.getItem("token")}`},
       };
     fetch("http://localhost:3000/auth/posts/", option)
-    .then((res) => {
-      if(res.ok){
-        return res.json()
-      }else{
-        throw new Error("Erreur posts")
-      }
-    })
+    .then((res) => res.json())
     .then((res) => {
       console.log(res)
       this.posts = res
     })
     .catch((err) => console.log(err))
     }
-    }
+      }
     </script>
 
 

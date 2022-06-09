@@ -68,10 +68,12 @@ function submitLogin(email, password) {
       body: JSON.stringify({ email, password }),
   };
   fetch("http://localhost:3000/auth/user/login", option)
-    .then((res) => res.json())
+    .then((res) => {
+      if(res.ok) return res.json()
+throw new Error(res.statusText)
+})
     .then((res) => {
       const token = res.token
-      if(res.ok)
   localStorage.setItem("token", token);
           return this.$router.push("/")
     })

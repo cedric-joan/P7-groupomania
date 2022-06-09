@@ -1,14 +1,14 @@
 const express = require("express");
 const app = express();
 const path = require("path");
-const cors = require("cors")
-const postRoutes = require('./routes/post.routes')
-const userRoutes = require("./routes/user.routes")
+const cors = require("cors");
+const postRoutes = require('./routes/post.routes');
+const userRoutes = require("./routes/user.routes");
+const bodyParser = require("body-parser")
 
 const mongoose = require("mongoose");
 const password = process.env.DB_PASS;
 const userName = process.env.DB_USERNAME;
-
 
 mongoose
   .connect(
@@ -25,8 +25,9 @@ mongoose
 
 app.use(cors());
 
-
 app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
 app.use("/images", express.static(path.join(__dirname, "images")));
 

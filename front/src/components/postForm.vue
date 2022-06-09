@@ -18,8 +18,6 @@ export default {
     name:'postForm',
     data() {
       return{
-        userId:"",
-  pseudo:"",
   content:"",
         selectedImage: null,
 
@@ -33,8 +31,6 @@ this.selectedImage = e.target.files[0]
 
   sendPost(){
 const formData = new FormData()
-formData.append("userId", this.userId)
-formData.append("pseudo", this.pseudo)
 formData.append("content",this.content)
 formData.append("image", this.selectedImage)
 
@@ -43,7 +39,6 @@ formData.append("image", this.selectedImage)
         method: "POST",
         headers: { 
         Authorization: `Bearer ${localStorage.getItem("token")}`,
-        "Content-type": "application/json",
         "Accept": "application/json"
         },
         body: formData
@@ -52,7 +47,7 @@ formData.append("image", this.selectedImage)
     .then((res) => {
       console.log(res)
       if(res.ok){
-        return res.json(res)
+        return res.json()
       }else{
         throw new Error("Erreur post")
       }
