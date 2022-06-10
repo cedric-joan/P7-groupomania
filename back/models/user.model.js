@@ -8,6 +8,7 @@ const userSchema = mongoose.Schema({
   pseudo:{ type: String, minLength:3, maxLength:10, trimp: true},
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  posts: [{body: String, date: Date}]
 },
 {timestamps: true,})
 

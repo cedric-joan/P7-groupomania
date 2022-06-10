@@ -36,20 +36,46 @@ export default {
   name: 'CardItem',
   components:{
 },
-props:{
-  userId: { type: String },
-  pseudo: { type: String },
-  content: { type: String },
-  imageUrl: { type: String },
+props:[
+  "pseudo",
+  "content",
+  "imageUrl",
 
-},
+]
+,
 methods: {
 deletePost(){
-console.log(this.$props.userId)
+
+    const options = {
+        method: "DELETE",
+        headers: { 
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Accept": "application/json"
+        },
+      };
+    fetch("http://localhost:3000/auth/post/:id" , options)
+    .then((res) => {
+      if(res.status === 200){
+      console.log(res) 
+        return res.json()
+      }else{
+        throw new Error("Erreur post")
+      }
+    })
+    .then((res) => {
+      console.log(res)
+      // this.$router.go()
+    })
+    .catch((err) => console.log(err))
+    },
+
+
+
+
 },
 sendComment(){}
 }
-}
+
 </script>
 
 
@@ -58,7 +84,8 @@ sendComment(){}
 <style scoped>
 .card{
   margin-top:1.5rem;
-  width: 30rem;
+box-shadow: 0 0 7px salmon;
+width: 30rem;
 }
 .card-img-top{
 background-size: cover;
@@ -84,7 +111,7 @@ input{
   height: 1%;
 }
 .bi-trash {
-  margin-left: 2.5rem;
+  margin-left: 5rem;
   transform: scale(1.15);
 }
 .bi-trash :hover{
@@ -110,6 +137,10 @@ cursor: pointer;
 input{
   width: 60%;
   height: 30%;
+}
+.bi-trash {
+  margin-left: 2.5rem;
+  transform: scale(1.15);
 }
 }
 </style>

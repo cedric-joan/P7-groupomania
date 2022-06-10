@@ -1,57 +1,45 @@
-const Post = require("../models/post.model");
+const { Post } = require("../models/post.model");
 const fs = require("fs");
-const posts = []
+const posts = [];
 
 function createPost(req, res) {
-  const content = req.body.content
-  const hasImage = req.file != null
-  const url = hasImage ? createImageUrl(req) : null
-  const post = { content, imageUrl: url }
-  posts.unshift(post)
-  res.send({post})
+  const { content } = req.body;
+  const post = new Post({
+    imageUrl: `${req.protocol}://${req.get("host")}/images/${
+      req.file.filename
+    }`,
+    content: content,
+  });
+  post.save().then(() => res.send({ post }));
+  posts.unshift(post);
 }
 
-function createImageUrl(req) {
-let pathToImage = req.file.path.replace("\\", "/")
-const protocol = req.protocol
-const host = req.get("host")
-return `${protocol}://${host}/${pathToImage}`
-
+function getPosts(req, res) {
+  const email = req.email;
+  res.send({ posts, email });
 }
 
-// function modifyPost(req, res) {
-//   const postObjet = req.file
-//     ? {
-//         ...JSON.parse(req.body.post),
-//         imageUrl: `${req.protocol}://${req.get("host")}/images/${
-//           req.file.filename
-//         }`,
-//       }
-//     : { ...req.body };
-//   Post.updateOne({ _id: req.params.id }, { ...postObjet, _id: req.params.id })
-//     .then(() => res.status(200).json())
-//     .catch((error) => res.status(400).json({ error }));
-// }
+
+
+
+
+
+
 function deletePost(req, res) {
-  Post.findOne({ _id: req.params.id }).then((post) => {
+  Post.findOne({ id: req.params.id }).then((post) => {
     if (post.userId != req.userId) {
-      res
-        .status(403)
-        .json();
-      return;
+      return res.status(403).send({ message: "utilisateur non autorisé" });
     }
-
     const filename = post.imageUrl.split("/images/")[1];
     fs.unlink(`images/${filename}`, () => {
-      Post.deleteOne({ _id: req.params.id })
+      Post.deleteOne({ id: req.params.id })
         .then(() => res.status(200).json())
         .catch((error) => res.status(400).json({ error }));
     });
+    const index = posts.indexOf(post);
+    posts.splice(index, 1);
+    res.send({ message: "post supprimé" });
   });
-}
-function getPosts(req,res) {
-  const email = req.email
-res.send({posts, email})
 }
 
 

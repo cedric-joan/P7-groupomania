@@ -10,7 +10,7 @@
           height="200"
         />
         <h1 class="h3 mb-3 fw-normal">Veuillez vous identifier</h1>
-<!-- <p :class="errorLogin">{{ error }}</p> -->
+        <!-- <p :class="errorLogin">{{ error }}</p> -->
         <div class="form-floating">
           <input
             :class="this.isEmailValid ? 'is-valid' : 'is-invalid'"
@@ -39,15 +39,15 @@
             Mot de passe non valide.
           </div>
         </div>
-          <button
-            class="w-100 btn btn-lg btn-danger"
-            type="submit"
-            @click="() => submitLogin(this.email, this.password)"
-            :disabled="!isPasswordValid"
-          >
-            S'identifier
-          </button>
-        
+        <button
+          class="w-100 btn btn-lg btn-danger"
+          type="button"
+          @click.prevent="() => submitLogin(this.email, this.password)"
+          :disabled="!isPasswordValid"
+        >
+          S'identifier
+        </button>
+
         <p class="mt-5 mb-3 text-muted">Groupomania&copy; 2018–2022</p>
       </form>
     </main>
@@ -58,26 +58,27 @@
 import useValidate from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
 
-function submitLogin(email, password) {
+function submitLogin( email, password) {
   console.log({ email, password });
   const option = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-       },
-      body: JSON.stringify({ email, password }),
+    },
+    body: JSON.stringify({ email, password }),
   };
   fetch("http://localhost:3000/auth/user/login", option)
     .then((res) => {
-      if(res.ok) return res.json()
-throw new Error(res.statusText)
-})
-    .then((res) => {
-      const token = res.token
-  localStorage.setItem("token", token);
-          return this.$router.push("/")
+      if (res.ok) return res.json();
+      throw new Error(res.statusText);
     })
-    .catch((err) => console.log(err))
+    .then((res) => {
+      const token = res.token;
+      localStorage.setItem("token", token);
+      console.log(this.$router);
+      return this.$router.push("/");
+    })
+    .catch((err) => console.log(err));
 }
 // function errorLogin(err){
 //       if (err === 401) {
@@ -85,18 +86,17 @@ throw new Error(res.statusText)
 //       }
 //     }
 
-
-
 export default {
   name: "LoginView",
   data() {
     return {
       v$: useValidate(),
-      email: "",
-      password: "",
+      email: "jojo@gm.fr",
+      password: "jojo23",
       isEmailValid: false,
       isPasswordValid: false,
       // error:  "",
+      
     };
   },
   methods: {
@@ -173,9 +173,9 @@ a {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
-@media (max-width: 992px){
-h1 {
-  margin-left: 2rem;
-}
+@media (max-width: 992px) {
+  h1 {
+    margin-left: 2rem;
+  }
 }
 </style>
