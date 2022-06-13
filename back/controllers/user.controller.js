@@ -26,12 +26,12 @@ async function login(req, res) {
 
     console.log(user);
     if (!user) {
-      return res.status(401).json({ message: "utilisateur non trouvé !" });
+      return res.status(401).json("Utilisateur non trouvé !");
     }
     const isValid = await bcrypt.compare(req.body.password, user.password);
 
     if (!isValid) {
-      return res.status(401).json({ message: "mot de passe incorrect !" });
+      return res.status(400).json("Mot de passe incorrect !");
     }
     const jwtPassword = process.env.JWT_PASSWORD;
     res.status(200).json({

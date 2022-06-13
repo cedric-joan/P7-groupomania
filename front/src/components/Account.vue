@@ -1,99 +1,87 @@
 <template>
-  <form v-if="this.isLoggedIn" 
-  class="post">
-    <div class="mb-3">
-      <img
-        src="#"
-        class="img-thumbnail"
-        alt="photo_portrait"
-      />
-      <input
-        type="file"
-        class="form-control"
-        aria-label="file example"
-        required
-      />
-    </div>
-  </form>
+  
 
   <div class="name g-3">
-    <div class="col">
+    <div class="avatar" id="avatar-img">
+      <label for="file-input">
+        <img src="../assets/avatardefault_92824.png" alt="image_avatar">
+    </label>
+    <input id="file-input" type="file" hidden>
+    </div>
+        <div class="form">
       <input
         type="text"
         class="form-control"
-        id="user_pseudo"
-        placeholder="Pseudo"
+        id="last-name"
+        placeholder="Prénom"
         aria-label="Last name"
-        v-model="pseudo"
+        v-model="name"
       />
     </div>
-    <div class="form-floating">
+    <div class="form">
       <input
         :class="this.isEmailValid ? 'is-valid' : 'is-invalid'"
         type="email"
         class="form-control"
         id="validationEmail"
-        placeholder="name@example.com"
+        placeholder="Adresse email"
         v-model="email"
       />
-      <label for="validationEmail">Adresse mail</label>
       <div id="validationServerEmailFeedback" class="invalid-feedback">
-        Email non valide.
+         Format de l'email non valide.
       </div>
     </div>
-    <div class="form-floating">
+    <div class="form">
       <input
         :class="this.isPasswordValid ? 'is-valid' : 'is-invalid'"
         type="password"
         class="form-control"
         id="validationPassword"
-        placeholder="Password"
+        placeholder="Mot de passe"
         v-model="password"
       />
-      <label for="floatingPassword">Mot de passe</label>
       <div id="validationServerPasswordFeedback" class="invalid-feedback">
-        Mot de passe non valide.
+        5 caractères min.
       </div>
     </div>
+
+  </div>
     <div class="d-flex">
-      
-        <button
+      <button
           v-if="!this.isLoggedIn"
           type="submit"
           class="btn btn-primary btn-lg"
-          @click="() => submitForm(this.pseudo,this.email, this.password)"
+          @click="() => submitForm(this.name,this.email, this.password)"
           :disabled="!isPasswordValid"
         >
           Enregistrer
         </button>
-      
       <router-link to="/login">
         <button
           v-if="this.isLoggedIn"
-          type="button"
+          type="submit"
           class="btn btn-danger btn-lg"
+          :disabled="!isPasswordValid"
         >
           Supprimer
         </button></router-link
       >
     </div>
         <p class="mt-5 mb-3 text-muted">Groupomania &copy; 2018–2022</p>
-
-  </div>
 </template>
 
 <script>
 import useValidate from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
 
-function submitForm(pseudo, email, password) {
-  console.log({ pseudo, email, password });
+function submitForm(name, email, password) {
+  console.log({ name, email, password });
   const postData = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-      body: JSON.stringify({ pseudo, email, password }),
+      body: JSON.stringify({ name, email, password }),
   };
 const url = "http://localhost:3000"
   fetch(url + "/auth/user/signup", postData)
@@ -118,7 +106,7 @@ export default {
   data() {
     return {
       v$: useValidate(),
-      pseudo: "",
+      name: "",
       email: "",
       password: "",
       isEmailValid: false,
@@ -177,17 +165,12 @@ export default {
   margin-top: 1rem;
 }
 .name {
-  width: 20%;
+  width: 30%;
   margin: auto;
-  margin-top: 10rem;
+  margin-top: 13rem;
 }
 .col {
   margin-top: 0.5rem;
-}
-.img-thumbnail {
-  margin-left: 0rem;
-  margin-top: 2rem;
-  margin-bottom: 1rem;
 }
 .bd-placeholder-img {
   font-size: 1.125rem;
@@ -203,11 +186,13 @@ export default {
   border-color: #fff;
   box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
 }
-.post {
-  max-width: 35%;
-  margin: auto;
+p {
+  display: flex;
+  justify-content: center;
 }
 .d-flex {
+  display: flex;
+  justify-content: center;
   margin-top: 1rem;
   gap: 1rem;
 }
@@ -215,7 +200,22 @@ export default {
   margin-top: 10rem;
 }
 
-@media (max-width: 768px) {
+img {
+display: block;
+margin: auto;
+  width: 32%;
+  top: -10rem;
+  cursor: pointer;
+
+}
+.form {
+  margin-top: 1rem;
+}
+.avatar {
+  display: flex;
+  align-items: center;
+}
+@media (max-width: 768px)   {
   .bd-placeholder-img-lg {
     font-size: 3.5rem;
   }
@@ -223,9 +223,17 @@ export default {
     width: 130px;
   }
   .name {
-  width: 90%;
+  width: 70%;
   margin: auto;
-  margin-top: 15rem;
+  margin-top: 13rem;
 }
+img {
+  display: block;
+margin: auto;
+  width: 32%;
+  top: -7rem;
+
+}
+
 }
 </style>

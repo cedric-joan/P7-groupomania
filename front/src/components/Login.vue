@@ -21,9 +21,6 @@
             v-model="email"
           />
           <label for="email">Adresse mail</label>
-          <div id="validationServerEmailFeedback" class="invalid-feedback">
-            Email non valide.
-          </div>
         </div>
         <div class="form-floating">
           <input
@@ -35,8 +32,11 @@
             v-model="password"
           />
           <label for="password">Mot de passe</label>
-          <div id="validationServerPasswordFeedback" class="invalid-feedback">
-            Mot de passe non valide.
+          <div
+            v-if="this.isPasswordValid || (this.isEmailValid && error)"
+            class="err-msg"
+          >
+            {{ this.error }}
           </div>
         </div>
         <button
@@ -58,7 +58,7 @@
 import useValidate from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
 
-function submitLogin( email, password) {
+function submitLogin(email, password) {
   console.log({ email, password });
   const option = {
     method: "POST",
@@ -70,33 +70,33 @@ function submitLogin( email, password) {
   fetch("http://localhost:3000/auth/user/login", option)
     .then((res) => {
       if (res.ok) return res.json();
-      throw new Error(res.statusText);
+      res.text().then((err) => {
+        const error = JSON.parse(err);
+        console.log(err);
+        this.error = error;
+        throw new Error(error);
+      });
     })
     .then((res) => {
       const token = res.token;
       localStorage.setItem("token", token);
-      console.log(this.$router);
       return this.$router.push("/");
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+    });
 }
-// function errorLogin(err){
-//       if (err === 401) {
-//        return this.errror = "Vérifier vos identifiants";
-//       }
-//     }
 
 export default {
   name: "LoginView",
   data() {
     return {
       v$: useValidate(),
-      email: "jojo@gm.fr",
-      password: "jojo23",
+      email: "cejoan@gmail.coma",
+      password: "joancedrica",
       isEmailValid: false,
       isPasswordValid: false,
-      // error:  "",
-      
+      error: "",
     };
   },
   methods: {
@@ -121,12 +121,14 @@ export default {
         "g"
       );
       const testEmail = emailRegExp.test(this.email);
-      return this.setEmailValidity(testEmail);
+      this.setEmailValidity(testEmail);
+      this.error = null;
     },
 
     password(value) {
       const isValid = value.length > 5;
-      return this.setPasswordValidity(isValid);
+      this.setPasswordValidity(isValid);
+      this.error = null;
     },
   },
   validations() {
@@ -161,7 +163,9 @@ a {
 .form-signin .form-floating:focus-within {
   z-index: 2;
 }
-
+.err-msg {
+  color: red;
+}
 .form-signin input[type="email"] {
   margin-bottom: -1px;
   border-bottom-right-radius: 0;

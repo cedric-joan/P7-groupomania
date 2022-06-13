@@ -5,14 +5,8 @@
     </div>
     <div class="menu-items">
       <div class="sticky"><PopularList></PopularList></div>
-      <div class="card-items">
-        <span v-for="post in posts" :key="post">
-          <CardItem >
-            {{ post.content }}
-          </CardItem>
-        </span>
-        <!-- <CardItem></CardItem> -->
-        <!-- <CardItem></CardItem> -->
+      <div class="card-items" v-for="post of posts" :key="post.id">
+          <CardItem name="post.name" content="post.content" imageUrl="post.imageUrl"></CardItem>
       </div>
     </div>
     <p class="mt-5 mb-3 text-muted">Groupomania&copy; 2018–2022</p>
@@ -34,10 +28,11 @@ export default {
   },
   data() {
     return {
-      content: "",
+      name:"",
+      content:"",
+      imageUrl:"",
       posts: [],
       email: null,
-      imageUrl: null,
       admin: false,
       userPicture: "",
     };
