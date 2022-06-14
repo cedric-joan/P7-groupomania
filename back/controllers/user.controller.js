@@ -10,6 +10,7 @@ function signup(req, res) {
   const NUMBER_OF_ROUNDS = 10;
   bcrypt.hash(req.body.password, NUMBER_OF_ROUNDS).then((hash) => {
     const user = new User({
+      userName: req.body.userName,
       email: req.body.email,
       password: hash,
     });

@@ -18,7 +18,8 @@ created(){
 },
 methods:{
   logOut(){
-   return localStorage.removeItem("token")
+  localStorage.removeItem("token")
+  return this.$router.go()
   }
 }
 

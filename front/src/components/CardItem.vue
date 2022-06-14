@@ -4,22 +4,21 @@
   <div class="card-header">
      <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle" 
     alt="Avatar" />
-      Publié par {{ name }}
+      <!-- Publié par {{ userName }} -->
      <!-- <button type="button" class="btn btn-outline-danger"></button> -->
 <i class="bi bi-trash" @click="deletePost"></i>
     </div>
-    {{ imageUrl }}
-    <img src="../assets/images_pro/image_pro-5.jpg" class="card-img-top" alt="#">
+    <img :src="imageUrl" class="card-img-top" alt="#">
     <div class="card-body">
       
-      <p class="card-text">{{ content }}</p>
+      <h4 class="content">{{ content }}</h4>
     </div>
-    <div class="card-remark">
+    <!-- <div class="card-remark">
     <img class="rounded-circle shadow-1-strong mb-4"
             src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(1).webp" alt="avatar" style="width:50px;" />
         <input class="form-control" type="text" placeholder="Ajoutez un texte" aria-label="default input example" >
         <button @click="sendComment" type="button" class="btn btn-outline-primary">Post</button>
-  </div>
+  </div> -->
   </div>
         
   </template>
@@ -32,10 +31,17 @@ export default {
   components:{
 },
 props:{
-  name: { type: String },
-  content: { type: String },
-  imageUrl: { type: String }
-},
+  userName:{
+    String
+  },
+  content:{
+    String
+  },
+  imageUrl: {
+    String
+  }
+}
+,
 methods: {
 deletePost(){
 
@@ -76,7 +82,7 @@ sendComment(){}
 
 <style scoped>
 .card{
-  margin-top:1.5rem;
+  margin-top:2.5rem;
 box-shadow: 0 0 7px rgb(88, 84, 198);
 width: 30rem;
 }
@@ -97,11 +103,11 @@ background-size: cover;
 }
 input{
   width: 50%;
-  height: 20%;
+  height: 50%;
 }
 .btn{
-  width: 15%;
-  height: 1%;
+  width: 25%;
+  height: 20%;
 }
 i.bi {
   margin-left: 5rem;
@@ -124,12 +130,12 @@ cursor: pointer;
     width: 30px;
 }
 .btn{
-  width: 18%;
+  width: 28%;
   height: 1%;
 }
 input{
-  width: 60%;
-  height: 30%;
+  width: 50%;
+  height: 40%;
 }
 .bi-trash {
   margin-left: 2.5rem;

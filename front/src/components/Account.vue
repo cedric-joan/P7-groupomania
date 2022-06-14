@@ -15,7 +15,7 @@
         id="last-name"
         placeholder="Prénom"
         aria-label="Last name"
-        v-model="name"
+        v-model="userName"
       />
     </div>
     <div class="form">
@@ -51,7 +51,7 @@
           v-if="!this.isLoggedIn"
           type="submit"
           class="btn btn-primary btn-lg"
-          @click="() => submitForm(this.name,this.email, this.password)"
+          @click="() => submitForm(this.userName,this.email, this.password)"
           :disabled="!isPasswordValid"
         >
           Enregistrer
@@ -74,14 +74,14 @@
 import useValidate from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
 
-function submitForm(name, email, password) {
-  console.log({ name, email, password });
+function submitForm(userName, email, password) {
+  console.log({ userName, email, password });
   const postData = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-      body: JSON.stringify({ name, email, password }),
+      body: JSON.stringify({ userName, email, password }),
   };
 const url = "http://localhost:3000"
   fetch(url + "/auth/user/signup", postData)
@@ -106,7 +106,7 @@ export default {
   data() {
     return {
       v$: useValidate(),
-      name: "",
+      userName: "",
       email: "",
       password: "",
       isEmailValid: false,
@@ -131,8 +131,15 @@ export default {
     setPasswordValidity(bool) {
       this.isPasswordValid = bool;
     },
+    setUserName() {}
   },
   watch: {
+userName() {
+const userNameValue = this.userName
+return this.setUserName(userNameValue)
+},
+
+
     email(value) {
       const emailRegExp = new RegExp(
         "^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$",

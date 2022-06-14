@@ -18,6 +18,7 @@ export default {
     name:'postForm',
     data() {
       return{
+        userName:"",
   content:"",
         selectedImage: null,
 
@@ -31,6 +32,7 @@ this.selectedImage = e.target.files[0]
 
   sendPost(){
 const formData = new FormData()
+formData.append("userName",this.userName)
 formData.append("content",this.content)
 formData.append("image", this.selectedImage)
 
@@ -43,6 +45,7 @@ formData.append("image", this.selectedImage)
         },
         body: formData
       };
+
     fetch("http://localhost:3000/auth/post", options)
     .then((res) => {
       console.log(res)
@@ -61,7 +64,6 @@ formData.append("image", this.selectedImage)
 }
 
 </script>
-
 
 
 

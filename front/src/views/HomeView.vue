@@ -4,9 +4,11 @@
       <PostForm></PostForm>
     </div>
     <div class="menu-items">
-      <div class="sticky"><PopularList></PopularList></div>
-      <div class="card-items" v-for="post of posts" :key="post.id">
-          <CardItem name="post.name" content="post.content" imageUrl="post.imageUrl"></CardItem>
+      <!-- <div class="sticky"><PopularList></PopularList></div> -->
+      <div class="card-items" >
+        <div  v-for="post in posts" :key="post" >
+          <CardItem :content="post.content" :imageUrl="post.imageUrl"></CardItem>
+        </div>
       </div>
     </div>
     <p class="mt-5 mb-3 text-muted">Groupomania&copy; 2018–2022</p>
@@ -16,21 +18,18 @@
 <script>
 // @ is an alias to /src
 import CardItem from "../components/CardItem.vue";
-import PopularList from "../components/PopularList.vue";
+// import PopularList from "../components/PopularList.vue";
 import PostForm from "../components/postForm.vue";
 
 export default {
   name: "HomeView",
   components: {
     CardItem,
-    PopularList,
+    // PopularList,
     PostForm,
   },
   data() {
     return {
-      name:"",
-      content:"",
-      imageUrl:"",
       posts: [],
       email: null,
       admin: false,
@@ -50,11 +49,11 @@ export default {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     };
-    fetch("http://localhost:3000/auth/posts/", option)
+    fetch("http://localhost:3000/auth/posts", option)
       .then((res) => res.json())
       .then((res) => {
-        console.log(res);
         this.posts = res;
+        console.log(this.posts);
       })
       .catch((err) => console.log(err));
   },

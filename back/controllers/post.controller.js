@@ -1,29 +1,34 @@
 const { Post } = require("../models/post.model");
 const fs = require("fs");
-const posts = [];
+
 
 function createPost(req, res) {
   const { content } = req.body;
   const post = new Post({
-    imageUrl: `${req.protocol}://${req.get("host")}/images/${
-      req.file.filename
-    }`,
-    content: content,
+    imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
+    content,
   });
   post.save().then(() => res.send({ post }));
-  posts.unshift(post);
-}
-
-function getPosts(req, res) {
-  const email = req.email;
-  res.send({ posts, email });
+  
 }
 
 
+function getPosts (req, res) {
+  Post.find()
+  .then((posts) => {
+      const mappedposts = posts.map((post) => {
+      imageUrl = req.protocol + '://' + req.get('host') + '/images/' + post.imageUrl;
+      return post
 
-
-
-
+      });
+      res.status(200).json(mappedposts);
+    }
+  ).catch(
+    () => {
+      res.status(500).send(new Error('Database error!'));
+    }
+  );
+};
 
 function deletePost(req, res) {
   Post.findOne({ id: req.params.id }).then((post) => {
