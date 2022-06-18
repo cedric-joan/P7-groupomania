@@ -1,11 +1,12 @@
-const mongoose = require("mongoose");
+const {Schema} = require("mongoose");
+const mongoose = require("mongoose")
 
-const postSchema = mongoose.Schema({
-  userId:{ type: String, require: true},
-  userName: { type: String },
+const PostSchema = new Schema({
   content: { type: String },
   imageUrl: { type: String},
+  likers: { type: [String]},
   date: { type: Date, default: Date.now},
+  user: { type: Schema.Types.ObjectId, ref: "User"},
 })
-const Post = mongoose.model("Post", postSchema);
+const Post = mongoose.model("Post", PostSchema);
 module.exports = {Post}

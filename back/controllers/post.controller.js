@@ -1,52 +1,52 @@
 const { Post } = require("../models/post.model");
 const fs = require("fs");
-
+console.log(Post);
 
 function createPost(req, res) {
   const { content } = req.body;
   const post = new Post({
-    imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
+    imageUrl: `${req.protocol}://${req.get("host")}/images/${
+      req.file.filename
+    }`,
     content,
+    user: req.userId,
   });
   post.save().then(() => res.send({ post }));
-  
 }
 
-
-function getPosts (req, res) {
+function getPosts(req, res) {
+  console.log(Post);
   Post.find()
-  .then((posts) => {
+    .populate({ path: "user", select: ["userName", "picture"] })
+    .then((posts) => {
       const mappedposts = posts.map((post) => {
-      imageUrl = req.protocol + '://' + req.get('host') + '/images/' + post.imageUrl;
-      return post
-
+        imageUrl =
+          req.protocol + "://" + req.get("host") + "/images/" + post.imageUrl;
+        return post;
       });
       res.status(200).json(mappedposts);
-    }
-  ).catch(
-    () => {
-      res.status(500).send(new Error('Database error!'));
-    }
-  );
-};
+    })
+    .catch((error) => {
+      res.status(500).send({ error });
+    });
+}
 
 function deletePost(req, res) {
-  Post.findOne({ id: req.params.id }).then((post) => {
-    if (post.userId != req.userId) {
+  Post.findOne({ _id: req.params.id }).populate("user", "isAdmin")
+  .then((post) => {
+    console.log('post:', post)
+    console.log(post.user._id.toString() , req.userId);
+    if (post.user._id.toString() != req.userId && !post.user.isAdmin) {
       return res.status(403).send({ message: "utilisateur non autorisé" });
     }
     const filename = post.imageUrl.split("/images/")[1];
     fs.unlink(`images/${filename}`, () => {
-      Post.deleteOne({ id: req.params.id })
-        .then(() => res.status(200).json())
+      Post.deleteOne({ _id: req.params.id })
+        .then(() => res.status(200).json({ message: "post supprimé" }))
         .catch((error) => res.status(400).json({ error }));
     });
-    const index = posts.indexOf(post);
-    posts.splice(index, 1);
-    res.send({ message: "post supprimé" });
   });
 }
-
 
 module.exports = {
   createPost,

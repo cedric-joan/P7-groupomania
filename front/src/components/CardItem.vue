@@ -1,16 +1,17 @@
-  <template>
-  
-  <div class="card" >
-  <div class="card-header">
-     <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle" 
-    alt="Avatar" />
-      <!-- Publié par {{ userName }} -->
-     <!-- <button type="button" class="btn btn-outline-danger"></button> -->
-<i class="bi bi-trash" @click="deletePost"></i>
+<template>
+  <div class="card">
+    <div class="card-header">
+      <img
+        src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
+        class="rounded-circle"
+        alt="Avatar"
+      />
+      <span class="userName">{{ userName }}</span>
+      <!-- <button type="button" class="btn btn-outline-danger"></button> -->
+      <i v-if="isOwner || isAdmin" class="bi bi-trash" @click="()=> deletePost(id)"></i>
     </div>
-    <img :src="imageUrl" class="card-img-top" alt="#">
+    <img :src="imageUrl" class="card-img-top" alt="#" />
     <div class="card-body">
-      
       <h4 class="content">{{ content }}</h4>
     </div>
     <!-- <div class="card-remark">
@@ -20,126 +21,106 @@
         <button @click="sendComment" type="button" class="btn btn-outline-primary">Post</button>
   </div> -->
   </div>
-        
-  </template>
+</template>
 
 <script>
-
-
 export default {
-  name: 'CardItem',
-  components:{
-},
-props:{
-  userName:{
-    String
+  name: "CardItem",
+  components: {},
+  props: {
+    userName: {
+      type: String,
+      default: "visitor"
+    },
+    content: String,
+    imageUrl: String,
+    id: String,
+    isOwner: Boolean,
+    isAdmin: Boolean,
   },
-  content:{
-    String
-  },
-  imageUrl: {
-    String
-  }
-}
-,
-methods: {
-deletePost(){
-
-    const options = {
+  methods: {
+    deletePost(id) {
+      const options = {
         method: "DELETE",
-        headers: { 
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        "Accept": "application/json"
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json",
         },
       };
-    fetch("http://localhost:3000/auth/post/:id" , options)
-    .then((res) => {
-      if(res.status === 200){
-      console.log(res) 
-        return res.json()
-      }else{
-        throw new Error("Erreur post")
-      }
-    })
-    .then((res) => {
-      console.log(res)
-      // this.$router.go()
-    })
-    .catch((err) => console.log(err))
+      fetch("http://localhost:3000/posts/" + id, options)
+        .then((res) => {
+          if (res.status === 200) {
+            console.log(res);
+            return res.json();
+          } else {
+            throw new Error("Erreur post");
+          }
+        })
+        .then((res) => {
+          console.log(res);
+          this.$router.go()
+        })
+        .catch((err) => console.log(err));
     },
-
-
-
-
-},
-sendComment(){}
-}
-
+  },
+};
 </script>
 
-
-
-
 <style scoped>
-.card{
-  margin-top:2.5rem;
-box-shadow: 0 0 7px rgb(88, 84, 198);
-width: 30rem;
+.card {
+  margin-top: 2.5rem;
+  box-shadow: 0 0 7px rgb(88, 84, 198);
+  width: 30rem;
 }
-.card-img-top{
-background-size: cover;
+.card-img-top {
+  background-size: cover;
 }
 .card-header {
-  background-color:rgb(221, 216, 216);
+  background-color: rgb(221, 216, 216);
 }
-.card-header img{
+.card-header img {
   width: 50px;
 }
 .card-body {
-  border-top: 1px solid
+  border-top: 1px solid;
 }
-.chat{
+.chat {
   margin-left: 1.5rem;
 }
-input{
+input {
   width: 50%;
   height: 50%;
 }
-.btn{
+.btn {
   width: 25%;
   height: 20%;
 }
-i.bi {
-  margin-left: 5rem;
-  transform: scale(1.15);
+i.bi-trash {
+  margin-left: 20rem;
 }
-i.bi :hover{
-color: red;
-cursor: pointer;
+i.bi-trash:hover {
+  color: red;
+  cursor: pointer;
 }
-.card-remark{
+.card-remark {
   display: flex;
   margin-left: 1rem;
   gap: 1%;
 }
-@media (max-width: 992px){
-  .card{
+@media (max-width: 992px) {
+  .card {
     width: 24rem;
   }
-  .card-header img{
+  .card-header img {
     width: 30px;
-}
-.btn{
-  width: 28%;
-  height: 1%;
-}
-input{
-  width: 50%;
-  height: 40%;
-}
-.bi-trash {
-  margin-left: 2.5rem;
-  transform: scale(1.15);
-}
+  }
+  .btn {
+    width: 28%;
+    height: 1%;
+  }
+  input {
+    width: 50%;
+    height: 40%;
+  }
 }
 </style>

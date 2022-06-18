@@ -6,17 +6,16 @@
       <label for="file-input">
         <img src="../assets/avatardefault_92824.png" alt="image_avatar">
     </label>
-    <input id="file-input" type="file" hidden>
     </div>
         <div class="form">
-      <input
+      <input 
         type="text"
         class="form-control"
         id="last-name"
         placeholder="Prénom"
         aria-label="Last name"
         v-model="userName"
-      />
+      /> 
     </div>
     <div class="form">
       <input
@@ -51,7 +50,7 @@
           v-if="!this.isLoggedIn"
           type="submit"
           class="btn btn-primary btn-lg"
-          @click="() => submitForm(this.userName,this.email, this.password)"
+          @click.prevent="() => submitForm(this.userName,this.email, this.password)"
           :disabled="!isPasswordValid"
         >
           Enregistrer
@@ -86,7 +85,7 @@ function submitForm(userName, email, password) {
 const url = "http://localhost:3000"
   fetch(url + "/auth/user/signup", postData)
     .then((res) => {
-      console.log(res)
+      console.log(res);
       if (res.ok) {
         return res.json();
       } else {
@@ -112,6 +111,8 @@ export default {
       isEmailValid: false,
       isPasswordValid: false,
       isLoggedIn: false,
+      userId:"",
+      error:"",
     };
   },
   methods: {
