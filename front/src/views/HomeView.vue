@@ -4,13 +4,14 @@
       <PostForm @current-user="setUser"></PostForm>
     </div>
     <div class="menu-items">
-      <!-- <div class="sticky"><PopularList></PopularList></div> -->
+      <div class="sticky"><PopularList></PopularList></div>
       <div class="card-items">
         <div v-for="post in posts" :key="post">
           <CardItem
             :content="post.content"
             :imageUrl="post.imageUrl"
             :userName="post.user.userName"
+            :date="post.date"
             :id="post._id"
             :isOwner="post.user._id === currentUser.userId"
             :isAdmin="currentUser.isAdmin"
@@ -25,14 +26,14 @@
 <script>
 // @ is an alias to /src
 import CardItem from "../components/CardItem.vue";
-// import PopularList from "../components/PopularList.vue";
+import PopularList from "../components/PopularList.vue";
 import PostForm from "../components/postForm.vue";
 
 export default {
   name: "HomeView",
   components: {
     CardItem,
-    // PopularList,
+    PopularList,
     PostForm,
   },
   data() {
@@ -42,6 +43,7 @@ export default {
       admin: false,
       userPicture: "",
       currentUser: null,
+      date: null,
     };
   },
   methods: {

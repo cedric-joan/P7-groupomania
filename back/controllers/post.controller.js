@@ -16,7 +16,7 @@ function createPost(req, res) {
 
 function getPosts(req, res) {
   console.log(Post);
-  Post.find()
+  Post.find().sort({"date": "desc"})
     .populate({ path: "user", select: ["userName", "picture"] })
     .then((posts) => {
       const mappedposts = posts.map((post) => {
@@ -36,7 +36,7 @@ function deletePost(req, res) {
   .then((post) => {
     console.log('post:', post)
     console.log(post.user._id.toString() , req.userId);
-    if (post.user._id.toString() != req.userId && !post.user.isAdmin) {
+    if (post.user._id.toString() != req.userId && post.user.isAdmin) {
       return res.status(403).send({ message: "utilisateur non autorisé" });
     }
     const filename = post.imageUrl.split("/images/")[1];

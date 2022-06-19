@@ -6,13 +6,13 @@
         class="rounded-circle"
         alt="Avatar"
       />
-      <span class="userName">{{ userName }}</span>
-      <!-- <button type="button" class="btn btn-outline-danger"></button> -->
+      <span class="user-name">{{ userName }}</span>
+      <span class="post-date">Posté le {{ date.split("T")[0].split("-").reverse().join("/")  }}</span>
       <i v-if="isOwner || isAdmin" class="bi bi-trash" @click="()=> deletePost(id)"></i>
     </div>
     <img :src="imageUrl" class="card-img-top" alt="#" />
     <div class="card-body">
-      <h4 class="content">{{ content }}</h4>
+      <p class="content">{{ content }}</p>
     </div>
     <!-- <div class="card-remark">
     <img class="rounded-circle shadow-1-strong mb-4"
@@ -37,6 +37,7 @@ export default {
     id: String,
     isOwner: Boolean,
     isAdmin: Boolean,
+    date: String,
   },
   methods: {
     deletePost(id) {
@@ -72,14 +73,25 @@ export default {
   box-shadow: 0 0 7px rgb(88, 84, 198);
   width: 30rem;
 }
+.user-name {
+  font-weight: bold;
+  margin-left:0.5rem ;
+}
 .card-img-top {
   background-size: cover;
+}
+p {
+  font-size:larger;
 }
 .card-header {
   background-color: rgb(221, 216, 216);
 }
 .card-header img {
   width: 50px;
+}
+.post-date {
+  margin-left:0.5rem ;
+
 }
 .card-body {
   border-top: 1px solid;
@@ -96,7 +108,7 @@ input {
   height: 20%;
 }
 i.bi-trash {
-  margin-left: 20rem;
+  margin-left: 8.5rem;
 }
 i.bi-trash:hover {
   color: red;
@@ -122,5 +134,8 @@ i.bi-trash:hover {
     width: 50%;
     height: 40%;
   }
+  i.bi-trash {
+  margin-left: 4rem;
+}
 }
 </style>

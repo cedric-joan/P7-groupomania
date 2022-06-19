@@ -1,10 +1,9 @@
 require("dotenv").config();
 const bcrypt = require("bcrypt");
-// const ObjectID = require("mongoose").Types.ObjectId
 
 const jwt = require("jsonwebtoken");
 
-const {User} = require("../models/user.model");
+const { User } = require("../models/user.model");
 
 function signup(req, res) {
   console.log(req.body);
@@ -18,14 +17,13 @@ function signup(req, res) {
     user
       .save()
       .then((response) => {
-        console.log(response)
+        console.log(response);
         return res.status(201).json({ user: user._id });
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
         return res.status(400).json(err);
       });
-
   });
 }
 
@@ -54,35 +52,37 @@ async function login(req, res) {
   }
 }
 
-
 function getUser(req, res) {
-  console.log(req.userId)
-  User.findById( req.userId ).populate("posts")
-  .then((user) => {
-    if (!user) {
+  console.log(req.userId);
+  User.findById(req.userId)
+    .populate("posts")
+    .then((user) => {
+      if (!user) {
         return res.status(404).send(new Error("user not found!"));
       }
       res.status(200).json({
         userId: user._id,
         picture: user.picture,
         userName: user.userName,
-        isAdmin: user.isAdmin
+        isAdmin: user.isAdmin,
       });
     })
     .catch((err) => res.status(500).send({ err }));
-  }
-  module.exports = { signup, login, getUser, deleteUser };
-  
-  function deleteUser(req, res) {
-    User.findOne({userId: req.params.id }).then((user) => {
-      if (user.userId != req.userId) {
-        res
-          .status(403)
-          .json({ message: "utilisateur ne possède pas cette ressource" });
-        return;
-      }
-      User.deleteOne({ _id: req.params.id })
-        .then(() => res.status(200).json({ message: "Utilisteur supprimé !" }))
-        .catch((error) => res.status(400).json({ error }));
-    });
-  }
+}
+
+function deleteUser(req, res) {
+  console.log(req.userId);
+  User.findOne({ _id: req.userId }).then((user) => {
+    if (user._id.toString() != req.userId && !user.isAdmin) {
+      res
+        .status(403)
+        .json({ message: "utilisateur ne possède pas cette ressource" });
+      return;
+    }
+    User.deleteOne({ _id: req.userId })
+      .then(() => res.status(200).json({ message: "Utilisteur supprimé !" }))
+      .catch((error) => res.status(400).json({ error }));
+  });
+}
+
+module.exports = { signup, login, getUser, deleteUser };
