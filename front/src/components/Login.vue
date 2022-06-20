@@ -10,7 +10,6 @@
           height="200"
         />
         <h1 class="h3 mb-3 fw-normal">Veuillez vous identifier</h1>
-        <!-- <p :class="errorLogin">{{ error }}</p> -->
         <div class="form-floating">
           <input
             :class="this.isEmailValid ? 'is-valid' : 'is-invalid'"
@@ -59,7 +58,6 @@ import useValidate from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
 
 function submitLogin(email, password) {
-  console.log({ email, password });
   const option = {
     method: "POST",
     headers: {
@@ -72,7 +70,6 @@ function submitLogin(email, password) {
       if (res.ok) return res.json();
       res.text().then((err) => {
         const error = JSON.parse(err);
-        console.log(err);
         this.error = error;
         throw new Error(error);
       });
@@ -80,7 +77,7 @@ function submitLogin(email, password) {
     .then((res) => {
       const token = res.token;
       localStorage.setItem("token", token);
-      return this.$router.push("/");
+      this.$router.go("/");
     })
     .catch((err) => {
       console.log(err);
@@ -92,8 +89,8 @@ export default {
   data() {
     return {
       v$: useValidate(),
-      email: "cejoan@gmail.coma",
-      password: "joancedrica",
+      email: "",
+      password: "",
       isEmailValid: false,
       isPasswordValid: false,
       error: "",

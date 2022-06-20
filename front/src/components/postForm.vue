@@ -45,23 +45,19 @@ export default {
     fetch("http://localhost:3000/auth/user", option)
       .then((res) => res.json())
       .then((res) => {
-        console.log(res);
         this.user = res;
-        this.$emit("currentUser", this.user)
+        this.$emit("currentUser", this.user);
       })
       .catch((err) => console.log(err));
   },
-
   methods: {
     addNewFile(e) {
       this.selectedImage = e.target.files[0];
     },
-
     sendPost() {
       const formData = new FormData();
       formData.append("content", this.content);
       formData.append("image", this.selectedImage);
-
       const options = {
         method: "POST",
         headers: {
@@ -70,10 +66,8 @@ export default {
         },
         body: formData,
       };
-
       fetch("http://localhost:3000/posts", options)
         .then((res) => {
-          console.log(res);
           if (res.ok) {
             return res.json();
           } else {

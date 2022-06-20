@@ -1,6 +1,5 @@
 const { Post } = require("../models/post.model");
 const fs = require("fs");
-console.log(Post);
 
 function createPost(req, res) {
   const { content } = req.body;
@@ -15,7 +14,6 @@ function createPost(req, res) {
 }
 
 function getPosts(req, res) {
-  console.log(Post);
   Post.find().sort({"date": "desc"})
     .populate({ path: "user", select: ["userName", "picture"] })
     .then((posts) => {
@@ -34,8 +32,6 @@ function getPosts(req, res) {
 function deletePost(req, res) {
   Post.findOne({ _id: req.params.id }).populate("user", "isAdmin")
   .then((post) => {
-    console.log('post:', post)
-    console.log(post.user._id.toString() , req.userId);
     if (post.user._id.toString() != req.userId && post.user.isAdmin) {
       return res.status(403).send({ message: "utilisateur non autorisé" });
     }

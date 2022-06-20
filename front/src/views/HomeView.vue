@@ -69,7 +69,6 @@ export default {
       .then((res) => res.json())
       .then((res) => {
         this.posts = res;
-        console.log(this.posts);
       })
       .catch((err) => console.log(err));
   },

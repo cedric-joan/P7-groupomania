@@ -1,12 +1,9 @@
 require("dotenv").config();
 const bcrypt = require("bcrypt");
-
 const jwt = require("jsonwebtoken");
-
 const { User } = require("../models/user.model");
 
 function signup(req, res) {
-  console.log(req.body);
   const NUMBER_OF_ROUNDS = 10;
   bcrypt.hash(req.body.password, NUMBER_OF_ROUNDS).then((hash) => {
     const user = new User({
@@ -16,8 +13,7 @@ function signup(req, res) {
     });
     user
       .save()
-      .then((response) => {
-        console.log(response);
+      .then((user) => {
         return res.status(201).json({ user: user._id });
       })
       .catch((err) => {
@@ -30,13 +26,10 @@ function signup(req, res) {
 async function login(req, res) {
   try {
     const user = await User.findOne({ email: req.body.email });
-
-    console.log(user);
     if (!user) {
       return res.status(401).json("Utilisateur non trouvé !");
     }
     const isValid = await bcrypt.compare(req.body.password, user.password);
-
     if (!isValid) {
       return res.status(400).json("Mot de passe incorrect !");
     }
@@ -53,7 +46,6 @@ async function login(req, res) {
 }
 
 function getUser(req, res) {
-  console.log(req.userId);
   User.findById(req.userId)
     .populate("posts")
     .then((user) => {
@@ -71,7 +63,6 @@ function getUser(req, res) {
 }
 
 function deleteUser(req, res) {
-  console.log(req.userId);
   User.findOne({ _id: req.userId }).then((user) => {
     if (user._id.toString() != req.userId && !user.isAdmin) {
       res

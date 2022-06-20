@@ -72,7 +72,6 @@ import useValidate from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
 
 function submitForm(userName, email, password) {
-  console.log({ userName, email, password });
   const postData = {
     method: "POST",
     headers: {
@@ -83,7 +82,6 @@ function submitForm(userName, email, password) {
   const url = "http://localhost:3000";
   fetch(url + "/auth/user/signup", postData)
     .then((res) => {
-      console.log(res);
       if (res.ok) {
         return res.json();
       } else {
@@ -91,7 +89,7 @@ function submitForm(userName, email, password) {
       }
     })
     .then((res) => {
-      this.userId = res
+      this.userId = res;
       this.$router.push("/login");
     })
     .catch((err) => console.log(err));
@@ -127,11 +125,10 @@ export default {
           Accept: "application/json",
         },
       };
-      fetch("http://localhost:3000/auth/user/" + this.userId , options)
+      fetch("http://localhost:3000/auth/user/" + this.userId, options)
         .then((res) => {
           if (res.status === 200) {
             alert("Votre compte va être supprimé!");
-            console.log(res);
             return res.json();
           } else {
             throw new Error("Erreur user");
@@ -145,9 +142,7 @@ export default {
         .catch((err) => console.log(err));
     },
     submitForm,
-    // ajout(){
-    //   console.log(this.user)
-    // },
+
     setEmailValidity(bool) {
       this.isEmailValid = bool;
     },

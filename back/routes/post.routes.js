@@ -7,7 +7,6 @@ const {
   getPosts,
 } = require("../controllers/post.controller");
 
-// const imageUpload = require("../middleware/image-config")
 const auth = require("../middleware/auth");
 const multer = require("../middleware/multer-config");
 

@@ -7,8 +7,14 @@
         alt="Avatar"
       />
       <span class="user-name">{{ userName }}</span>
-      <span class="post-date">Posté le {{ date.split("T")[0].split("-").reverse().join("/")  }}</span>
-      <i v-if="isOwner || isAdmin" class="bi bi-trash" @click="()=> deletePost(id)"></i>
+      <span class="post-date"
+        >Posté le {{ date.split("T")[0].split("-").reverse().join("/") }}</span
+      >
+      <i
+        v-if="isOwner || isAdmin"
+        class="bi bi-trash"
+        @click="() => deletePost(id)"
+      ></i>
     </div>
     <img :src="imageUrl" class="card-img-top" alt="#" />
     <div class="card-body">
@@ -30,7 +36,7 @@ export default {
   props: {
     userName: {
       type: String,
-      default: "visitor"
+      default: "visitor",
     },
     content: String,
     imageUrl: String,
@@ -51,7 +57,6 @@ export default {
       fetch("http://localhost:3000/posts/" + id, options)
         .then((res) => {
           if (res.status === 200) {
-            console.log(res);
             return res.json();
           } else {
             throw new Error("Erreur post");
@@ -59,7 +64,7 @@ export default {
         })
         .then((res) => {
           console.log(res);
-          this.$router.go()
+          this.$router.go();
         })
         .catch((err) => console.log(err));
     },
@@ -75,13 +80,13 @@ export default {
 }
 .user-name {
   font-weight: bold;
-  margin-left:0.5rem ;
+  margin-left: 0.5rem;
 }
 .card-img-top {
   background-size: cover;
 }
 p {
-  font-size:larger;
+  font-size: larger;
 }
 .card-header {
   background-color: rgb(221, 216, 216);
@@ -90,8 +95,7 @@ p {
   width: 50px;
 }
 .post-date {
-  margin-left:0.5rem ;
-
+  margin-left: 0.5rem;
 }
 .card-body {
   border-top: 1px solid;
@@ -135,7 +139,7 @@ i.bi-trash:hover {
     height: 40%;
   }
   i.bi-trash {
-  margin-left: 4rem;
-}
+    margin-left: 4rem;
+  }
 }
 </style>
