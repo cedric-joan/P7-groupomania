@@ -118,7 +118,6 @@ export default {
     const token = localStorage.getItem("token");
     if (token != null) {
       this.isLoggedIn = true;
-      this.$router.replace("/")
     }
   },
   methods: {
